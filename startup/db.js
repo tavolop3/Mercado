@@ -7,8 +7,9 @@ module.exports = async function(){
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
-
-    await sequelize.sync({ force: true });
+    
+    // This will run .sync() only if database name ends with '_test'
+    await sequelize.sync({ force: true, match: /_test$/ });
     
     // const User = require('./models/user');
 

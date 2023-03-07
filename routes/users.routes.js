@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-const User = require('../models/user');
+const { User, validate } = require('../models/user');
 
 router.get('/', async(req,res) => {
     const users = await User.findAll();
@@ -9,7 +9,8 @@ router.get('/', async(req,res) => {
 })
 
 .post('/', async(req,res,next) => {
-    //validate req.body
+    //validate req.body, validate also that mail and username doesnt exists
+
     const user = await User.create(req.body);
     res.send(user);
 })

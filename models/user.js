@@ -28,13 +28,40 @@ const User = sequelize.define('User', {
     },
     phone: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate:{
+            len: [5, 25]
+        }
     },
     adressId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [1, 15]
+        }
+    },
+    lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [1,50]
+        }
     }
 }
 );
 
-module.exports = User;
+function validateUser(user){
+    const schema = Joi.object({
+        name: Joi.string().min(3).max(15).required(),
+        email: Joi.string().min(3).max(50).required().email(),
+        password: Joi.string().min(3).max(255).required()
+    });
+    return schema.validate(user);
+}
+
+module.exports.User = User;
+module.exports.validate = validateUser;
