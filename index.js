@@ -1,13 +1,8 @@
 const app = require('express')();
-const { Sequelize } = require('sequelize');
-const { sequelize } = require('./db');
-const bcrypt = require('bcrypt');
+const sequelize = require('./db');
 
 require('./startup/routes')(app);
-require('./db').init();
+require('./startup/db')();
 
 const port = process.env.PORT || 8080;
 app.listen(port);
-
-const UserModel = require('./models/user');
-const User = UserModel(sequelize, Sequelize);
