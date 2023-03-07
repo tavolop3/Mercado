@@ -1,0 +1,8 @@
+{
+    "db": {
+        "host": "localhost",
+        "username": "admin",
+        "database": "mercado_db",
+        "dialect": "mysql"
+    }
+}
