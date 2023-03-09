@@ -1,15 +1,19 @@
+const winston = require('winston');
 const sequelize = require('../db');
 
 module.exports = async function(){
     try {
         await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
+        winston.info('Connection has been established successfully.');
     } catch (error) {
-        console.error('Unable to connect to the database:', error);
+        winston.error(error, 'Connection to the database failed. Check logs.');
     }
     
     // This will run .sync() only if database name ends with '_test'
-    await sequelize.sync({ force: true, match: /_test$/ });
+    await sequelize.sync({ force: true, match: /_test$/ })
+        .catch((err) => {
+            winston.error('Sync failed. Check logs.');
+    });
     
     // const User = require('./models/user');
 

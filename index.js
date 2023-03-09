@@ -1,5 +1,4 @@
 const app = require('express')();
-const sequelize = require('./db');
 
 require('./startup/routes')(app);
 require('./startup/logging')();
