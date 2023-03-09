@@ -13,12 +13,13 @@ module.exports = function() {
             format: winston.format.combine(
               winston.format.colorize(),
               winston.format.simple()
-            )
+            ),
+            handleRejections: true,
+            handleExceptions: true
           }),
           new winston.transports.File({ filename: 'logs/logfile.log' })
         ],
         exceptionHandlers: [
-            new winston.transports.Console(),
             new winston.transports.File({ filename: 'logs/uncaughtExceptions.log' })
         ]
       });

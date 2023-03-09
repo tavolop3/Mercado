@@ -3,6 +3,8 @@ const sequelize = require('../db');
 const Joi = require('joi').extend(require('@joi/date'));
 const myCustomJoi = Joi.extend(require('joi-phone-number'));
 const { Adress } = require('./adress');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 const User = sequelize.define('User', {
     email:{
@@ -26,7 +28,7 @@ const User = sequelize.define('User', {
         allowNull: false,
         unique: true,
         validate:{
-            len: [3, 10]
+            len: [3, 30]
         }
     },
     phone: {
@@ -81,7 +83,7 @@ User.validateCreate = (user) => {
         email: Joi.string().min(3).max(50).required().email(),
         password: Joi.string().min(8).max(255).required(),
         repeat_password: Joi.ref('password'),
-        username: Joi.string().min(3).max(10).required(),
+        username: Joi.string().min(3).max(30).required(),
         phone: myCustomJoi.string().phoneNumber().required(),
         name: Joi.string().min(3).max(15).required(),
         last_name: Joi.string().min(3).max(50).required(),
@@ -105,10 +107,15 @@ User.validateLogin = function(user){
             {
                 is: Joi.exist(),
                 then: Joi.forbidden(),
-                otherwise: Joi.string().min(3).max(10).required() 
-            })
+                otherwise: Joi.string().min(3).max(30).required() 
+        })
     });
     return schema.validate(user);
+}
+
+User.prototype.generateAuthToken = function() {
+    const token = jwt.sign({ username: this.username }, config.get('jwtPrivateKey'));
+    return token;
 }
 
 module.exports.User = User;

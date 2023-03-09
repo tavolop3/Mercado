@@ -3,15 +3,11 @@ const router = Router();
 const { User } = require('../models/user');
 const { Adress } = require('../models/adress');
 const { Op } = require('sequelize');
+const bcrypt = require('bcrypt');
+const _ = require('lodash');
+const auth = require('../middlewares/auth');
 
-router.get('/', async(req,res) => {
-    const users = await User.findAll();
-    
-    res.send(users);
-})
-
-.post('/', async(req,res) => {
-    //validate req.body, validate also that mail and username doesnt exists
+router.post('/registration', async(req,res) => {
     const { error } = User.validateCreate(req.body.user);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -28,10 +24,28 @@ router.get('/', async(req,res) => {
     const newAdress = await Adress.create(req.body.adress);
     req.body.user.adress_id = newAdress.id;
 
+    const salt = await bcrypt.genSalt(10);
+    req.body.user.password = await bcrypt.hash(req.body.user.password, salt);
     const user = await User.create(req.body.user);
-    
-    res.send(user);
+
+    res.send(_.pick(user, ['email','username']));
 })
 
+.post('/login', async(req,res) => {
+    const { error } = User.validateLogin(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    const user = req.body.email
+        ? await User.findOne({ where: { email: req.body.email }})
+        : await User.findOne({ where: { username: req.body.username }});
+    if(!user) return res.status(400).send('Invalid email/username or password 1.');
+
+    const validPassword = await bcrypt.compare(req.body.password,user.password);
+    if(!validPassword) return res.status(400).send('Invalid email/username or password');
+
+    const token = user.generateAuthToken();
+
+    res.json({'x-auth-token': token});
+})
 
 module.exports = router;
