@@ -54,7 +54,11 @@ const Adress = sequelize.define('Adress',
         type: DataTypes.STRING,
         allowNull: false
     }
-});
+},
+{
+    underscored: true
+}
+);
 
 function validate(adress) {
     const schema = Joi.object({

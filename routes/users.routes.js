@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const { User, validateCreateUser } = require('../models/user');
 const { Adress, validateCreateAdress } = require('../models/adress');
+const { Op } = require('sequelize');
 
 router.get('/', async(req,res) => {
     const users = await User.findAll();
@@ -17,8 +18,12 @@ router.get('/', async(req,res) => {
     const { err } = validateCreateAdress(req.body.adress);
     if(err) return res.status(400).send(error.details[0].message);
 
-    //verify that mail and username dont exist
-    //try catches
+    const existingUser = await User.findOne({ 
+        where: { 
+            [Op.or]: [{ email: req.body.user.email }, { username: req.body.user.username }]
+        } 
+    })
+    if(existingUser) return res.status(409).send('Email or username already exists.');
 
     const newAdress = await Adress.create(req.body.adress);
     req.body.user.adress_id = newAdress.id;

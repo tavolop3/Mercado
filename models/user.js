@@ -62,6 +62,9 @@ const User = sequelize.define('User', {
         type: DataTypes.DATEONLY,
         allowNull: false
     }
+},
+{
+    underscored: true
 }
 );
 
