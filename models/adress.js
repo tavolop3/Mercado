@@ -60,7 +60,7 @@ const Adress = sequelize.define('Adress',
 }
 );
 
-function validate(adress) {
+Adress.validate = function validate(adress) {
     const schema = Joi.object({
         country: Joi.string().min(2).max(20).required(),
         state: Joi.string().min(2).max(20).required(),
@@ -75,4 +75,3 @@ function validate(adress) {
 }
 
 exports.Adress = Adress;
-exports.validateCreateAdress = validate;

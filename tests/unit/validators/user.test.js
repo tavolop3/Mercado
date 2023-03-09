@@ -1,6 +1,4 @@
-const { validateCreateUser, validateLoginUser } = require('../../../models/user');
-
-//TODO test user create and login validations
+const { User } = require('../../../models/user');
 
 describe('user create joi validation', () => {
     let user = {
@@ -15,7 +13,7 @@ describe('user create joi validation', () => {
     }
 
     it('should be ok given a valid user', () => {
-        const{ error } = validateCreateUser(user);
+        const{ error } = User.validateCreate(user);
 
         expect(error).not.toBeDefined();
     });
@@ -23,7 +21,7 @@ describe('user create joi validation', () => {
     it('should return error given an invalid repeat password', () => {
         user.repeat_password = 'another different password';
 
-        const{ error } = validateCreateUser(user);
+        const{ error } = User.validateCreate(user);
 
         expect(error).toBeDefined();
     });
@@ -31,7 +29,7 @@ describe('user create joi validation', () => {
     it('should return error given an invalid young birth date < 18', () => {
         user.birth_date = new Date('2010-01-01');
 
-        const{ error } = validateCreateUser(user);
+        const{ error } = User.validateCreate(user);
 
         expect(error).toBeDefined();
     });
@@ -39,7 +37,7 @@ describe('user create joi validation', () => {
     it('should return error given an invalid young birth date > 120', () => {
         user.birth_date = new Date('1900-01-01');
 
-        const{ error } = validateCreateUser(user);
+        const{ error } = User.validateCreate(user);
 
         expect(error).toBeDefined();
     });
@@ -52,7 +50,7 @@ describe('user login joi validation', () => {
             password: '12345678'
         }      
 
-        const{ error } = validateLoginUser(user);
+        const{ error } = User.validateLogin(user);
          
         expect(error).not.toBeDefined();   
     });
@@ -63,7 +61,7 @@ describe('user login joi validation', () => {
             password: '123456789'
         }
 
-        const { error } = validateLoginUser(user); 
+        const { error } = User.validateLogin(user); 
         
         expect(error).not.toBeDefined();  
     });
@@ -75,7 +73,7 @@ describe('user login joi validation', () => {
             password: '123456789'
         }
 
-        const { error } = validateLoginUser(user); 
+        const { error } = User.validateLogin(user); 
         
         expect(error).toBeDefined();  
     });
@@ -85,7 +83,7 @@ describe('user login joi validation', () => {
             password: '123456789'
         }
 
-        const { error } = validateLoginUser(user); 
+        const { error } = User.validateLogin(user); 
         
         expect(error).toBeDefined();  
     });

@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
-const { User, validateCreateUser } = require('../models/user');
-const { Adress, validateCreateAdress } = require('../models/adress');
+const { User } = require('../models/user');
+const { Adress } = require('../models/adress');
 const { Op } = require('sequelize');
 
 router.get('/', async(req,res) => {
@@ -12,10 +12,10 @@ router.get('/', async(req,res) => {
 
 .post('/', async(req,res) => {
     //validate req.body, validate also that mail and username doesnt exists
-    const { error } = validateCreateUser(req.body.user);
+    const { error } = User.validateCreate(req.body.user);
     if(error) return res.status(400).send(error.details[0].message);
 
-    const { err } = validateCreateAdress(req.body.adress);
+    const { err } = Adress.validate(req.body.adress);
     if(err) return res.status(400).send(error.details[0].message);
 
     const existingUser = await User.findOne({ 

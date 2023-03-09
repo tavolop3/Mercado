@@ -68,7 +68,7 @@ const User = sequelize.define('User', {
 }
 );
 
-function validateCreate(user){
+User.validateCreate = (user) => {
     let maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - 18);
     let minDate = new Date();
@@ -90,7 +90,7 @@ function validateCreate(user){
     return schema.validate(user);
 }
 
-function validateLogin(user){
+User.validateLogin = function(user){
     const schema = Joi.object({
         password: Joi.string().min(8).max(255).required(),
         email: Joi.alternatives()
@@ -112,5 +112,3 @@ function validateLogin(user){
 }
 
 module.exports.User = User;
-module.exports.validateCreateUser = validateCreate;
-module.exports.validateLoginUser = validateLogin;
