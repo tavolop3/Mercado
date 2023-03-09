@@ -12,7 +12,7 @@ module.exports = async function(){
     // This will run .sync() only if database name ends with '_test'
     await sequelize.sync({ force: true, match: /_test$/ })
         .catch((err) => {
-            winston.error('Sync failed. Check logs.');
+            winston.error('Sync failed.', err);
     });
     
     // const User = require('./models/user');

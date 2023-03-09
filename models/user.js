@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 const Joi = require('joi').extend(require('@joi/date'));
 const myCustomJoi = Joi.extend(require('joi-phone-number'));
+const { Adress } = require('./adress');
 
 const User = sequelize.define('User', {
     email:{
@@ -35,9 +36,13 @@ const User = sequelize.define('User', {
             len: [5, 25]
         }
     },
-    adressId: {
+    adress_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+            model: Adress,
+            key: 'id'
+        }
     },
     name: {
         type: DataTypes.STRING,

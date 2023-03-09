@@ -2,11 +2,13 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 const Joi = require('joi');
 
-const adress = sequelize.define('Adress', 
+const Adress = sequelize.define('Adress', 
 {
-    adress_id: {
+    id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true
     },
     country:{
         type: DataTypes.STRING,
@@ -56,7 +58,6 @@ const adress = sequelize.define('Adress',
 
 function validate(adress) {
     const schema = Joi.object({
-        adress_id: Joi.number().required(),
         country: Joi.string().min(2).max(20).required(),
         state: Joi.string().min(2).max(20).required(),
         postal_code: Joi.number().required(),
@@ -69,4 +70,5 @@ function validate(adress) {
     return schema.validate(adress);
 }
 
-module.exports.adress = adress;
+exports.Adress = Adress;
+exports.validateCreateAdress = validate;
