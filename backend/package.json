@@ -2,7 +2,7 @@
   "name": "mercado",
   "version": "1.0.0",
   "description": "Intento de mercado",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "jest"
   },

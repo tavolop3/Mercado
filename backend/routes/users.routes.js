@@ -48,4 +48,10 @@ router.post('/registration', async(req,res) => {
     res.json({'x-auth-token': token});
 })
 
+.get('/',async(req,res) => {
+    const users = await User.findAll();
+
+    res.send(users)
+})
+
 module.exports = router;
