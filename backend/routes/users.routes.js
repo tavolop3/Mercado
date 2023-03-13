@@ -8,6 +8,7 @@ const _ = require('lodash');
 const auth = require('../middlewares/auth');
 
 router.post('/registration', async(req,res) => {
+    console.log(req.body);
     const { error } = User.validateCreate(req.body.user);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -32,7 +33,6 @@ router.post('/registration', async(req,res) => {
 })
 
 .post('/login', async(req,res) => {
-    console.log(req.body);
     const { error } = User.validateLogin(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 

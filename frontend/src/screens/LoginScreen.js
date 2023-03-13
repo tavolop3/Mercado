@@ -4,6 +4,8 @@ import Axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+//TODO: Use formik for handling forms like in registerscreen.js
+
 function LoginScreen() {
 
     const [emailOrUname,setEmailOrUname] = useState('');
@@ -23,8 +25,8 @@ function LoginScreen() {
             isEmail(emailOrUname) ? loginData.email = emailOrUname : loginData.username = emailOrUname; 
             const {data} = await Axios.post('/users/login', loginData);
             console.log(data);
+            navigate('/');
         }catch(err){console.log(err)}
-        navigate('/');
     }
 
     return (

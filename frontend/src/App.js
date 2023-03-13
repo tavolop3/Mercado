@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -18,7 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/users/login" element={<LoginScreen />} />
-        {/* <Route path="/users/register" element={<UserRegister />} /> */}
+        <Route path="/users/registration" element={<RegisterScreen />} />
       </Routes>
     </BrowserRouter>
   );

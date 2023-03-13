@@ -11,7 +11,7 @@ function HomeScreen() {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
-                <Nav.Link href="#link">Sign Up</Nav.Link>
+                <Nav.Link href="/users/registration">Register</Nav.Link>
                 <Nav.Link href="/users/login">Login</Nav.Link>
                 <NavDropdown title="Cuenta" id="basic-nav-dropdown" >
                     <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
